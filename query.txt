@@ -1,0 +1,71 @@
+// Connect on the terminal
+// mongosh mongodb://localhost:27017
+
+// To show all the dbs
+// show dbs
+
+// use dbname to go that db
+
+// Show collection to show all the table documents
+
+Q How many users are active?
+
+[
+  {
+	// match for specific condition
+	$match: {
+  	isActive: true
+	}
+  },
+To count the record that are passed, activeUser is the name of the field to be displayed.
+  {
+	$count: 'activeUser'
+  }
+]
+
+
+Lec 2 grouping in mongodb
+
+What is the average age of all users?
+
+[
+  {
+It will group all the people as one doc if _id is null
+	$group: {
+  	_id: null,
+  	averageAge: {
+    	$avg: "$age"
+  	}
+	}
+  }
+]
+
+
+
+Q list the top5 common fruits among the user
+
+[
+  {
+  // if _id is null then all the docs are treated as a wholw
+	// if _id is favouriteFruit then n docs are created on the basis of fruits available
+    $group: {
+      _id: "$favoriteFruit",
+      count: {
+        // this will add +1 everytime it will se that fruit available
+        $sum: 1
+      }
+    }
+  },
+  {
+    $sort: {
+      // -1 is for bara se chota and 1 is for chota to bara
+      count: -1
+    }
+  },
+  {
+    $limit: 3
+  }
+]
+
+
+
