@@ -232,3 +232,74 @@ Q how many users have phone numbers starting from +1 (940)
     }
   }
 ]
+
+
+Q Who has registered most recently?
+[
+  {
+    $sort: {
+      registered: -1
+    }
+  },
+  {
+    $limit: 4
+  },
+  {
+    $project: {
+      name: 1,
+      favoriteFruit: 1,
+      registered: 1
+    }
+  }
+]
+
+Q Categorized user by their favorite fruit?
+[
+  // push will return add all the names and concatenate them in an array.
+  {
+    $group: {
+      _id: "$favoriteFruit",
+      users: {
+        $push: "$name"
+      }
+    }
+  }
+]
+
+Q how many users have 'ad' as the second tag in the list of tags?
+[
+  {
+    $match: {
+      "tags.1": "ad"
+    }
+  }
+]
+
+
+Q All the users who have enim and ad in the tag list?
+
+[
+  // if we want result for and condition inside match
+	//  for the same items.
+  {
+    $match: {
+      "tags": {$all: ["enim", "ad"]}
+    }
+  }
+]
+
+
+Q joining in the table.
+// books wlay table ma ja kar
+// from authoer table
+// localfield foriegnfield add karni ha
+[
+  {
+    $lookup: {
+      from: "authors",
+      localField: "author_id",
+      foreignField: "_id",
+      as: "author_details"
+    }
+  }
+]
